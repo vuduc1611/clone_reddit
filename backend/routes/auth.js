@@ -12,5 +12,5 @@ router.post("/refresh", authController.requestRefreshToken)
 router.post("/login", authController.loginUser)
 
 // log out 
-router.post("/logout", authController.logoutUser)
+router.post("/logout",middlewareController.verifyToken ,authController.logoutUser)
 module.exports = router

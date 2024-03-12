@@ -49,17 +49,17 @@ const authController = {
             { expiresIn: "365d" }
         )
     },
-    requestRefreshToken: (user) => {
+    requestRefreshToken: (req, res) => {
         // take refresh token from client
-        const refreshToken = req.cookie.refreshToken
+        const refreshToken = req.cookies.refreshToken
         // if token is not valid, send err
         if(!refreshToken) return res.status(401).json({message: "You're not authenticated"})
 
-        jwt.verify(refreshToken, JWT_REFRESH_KEY, (err, user) => {
+        jwt.verify(refreshToken, process.env.JWT_REFRESH_KEY, (err, user) => {
             if(err) {
                 console.log(err)
             }
-            console.log("check user", user)
+            // console.log("check user", user)
             const  newAccessToken = authController.generateAccessToken(user)
             const  newRefreshToken = authController.generateRefreshToken(user)
             res.cookie("refreshToken", refreshToken, {
@@ -113,7 +113,9 @@ const authController = {
     },
     // log out 
     logoutUser: async(req, res) => {
-        
+        //Clear cookies when user logs out
+        res.clearCookie("refreshToken");
+        res.status(200).json("Logged out successfully!");
     }
 }
 module.exports = authController;
