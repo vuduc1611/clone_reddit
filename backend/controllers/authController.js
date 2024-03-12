@@ -5,7 +5,6 @@ const jwt = require("jsonwebtoken");
 const authController = {
     // register
     registertUser: async(req, res) => {
-        console.log(req.body)
         if(req.body.password.length > 7) {
             try{
                 const salt = await bcrypt.genSalt(10);
@@ -30,21 +29,90 @@ const authController = {
         }
     },
     //token
-    generateAccessToken: () => {
-            
+    generateAccessToken: (user) => {
+        return jwt.sign(
+            {
+                id: user.id,
+                isAdmin: user.isAdmin
+            },
+            process.env.JWT_KEY,
+            { expiresIn: "365d" }
+        )
     },
-    generateRefreshToken: () => {
-
+    generateRefreshToken: (user) => {
+        return jwt.sign(
+            {
+                id: user.id,
+                isAdmin: user.isAdmin
+            },
+            process.env.JWT_REFRESH_KEY,
+            { expiresIn: "365d" }
+        )
     },
-    requestRefreshToken: () => {
+    requestRefreshToken: (user) => {
+        // take refresh token from client
+        const refreshToken = req.cookie.refreshToken
+        // if token is not valid, send err
+        if(!refreshToken) return res.status(401).json({message: "You're not authenticated"})
 
+        jwt.verify(refreshToken, JWT_REFRESH_KEY, (err, user) => {
+            if(err) {
+                console.log(err)
+            }
+            console.log("check user", user)
+            const  newAccessToken = authController.generateAccessToken(user)
+            const  newRefreshToken = authController.generateRefreshToken(user)
+            res.cookie("refreshToken", refreshToken, {
+                httpOnly: true,
+                secure: false,
+                path: "/",
+                sameSite: "strict",
+            })
+            res.status(200).json({
+                accessToken: newAccessToken,
+                refreshToken: newRefreshToken
+            })
+
+        })
     },
     // log in
-    loginUser: async() => {
-        
+    loginUser: async(req, res) => {
+        try {
+            const user = await User.findOne({username: req.body.username})
+                .select("+password")
+            if(!user){
+                return res.status(404).json({message: "Incorrect username"})
+            }
+            const validPassword = await bcrypt.compare(
+                req.body.password,
+                user.password
+            )
+            if(!validPassword){
+                return res.status(404).json({message:"Incorrect password"});
+            } else if(user && validPassword) {
+                //Generate access token
+                const accessToken = authController.generateAccessToken(user)
+                //Generate refresh token
+                const refreshToken = authController.generateRefreshToken(user)
+                // Store token in cookie
+                res.cookie("refreshToken", refreshToken, {
+                    httpOnly: true,
+                    secure: false,
+                    path: "/",
+                    sameSite: "none",
+                })
+                const returnedUser = {
+                    ...user._doc,
+                    accessToken: accessToken
+                }
+                res.status(200).json(returnedUser)
+            }
+        } catch (error) {
+            res.status(500).json(error);
+        }
     },
     // log out 
-    logoutUser: async() => {
+    logoutUser: async(req, res) => {
         
     }
 }

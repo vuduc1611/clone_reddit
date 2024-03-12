@@ -12,6 +12,7 @@ const mongoose = require("mongoose")
 const port  = process.env.PORT || 8000
 
 dotenv.config()
+mongoose.set('strictQuery', false);
 mongoose.connect(process.env.DB_URL, () => {
   console.log("CONNECTED TO MONGO DB")
 })
