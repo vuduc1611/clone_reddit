@@ -7,6 +7,7 @@ const morgan = require("morgan")
 const app = express()
 
 const authRoute = require("./routes/auth")
+const userRoute = require("./routes/user")
 const bodyParser = require("body-parser")
 const mongoose = require("mongoose")
 const port  = process.env.PORT || 8000
@@ -33,7 +34,8 @@ app.use(morgan("common"))
 app.get("/v1/", (req, res) => {
   res.send("Hello World")
 })
-app.use("/v1/auth", authRoute);
+app.use("/v1/auth", authRoute)
+app.use("/v1/user", userRoute)
 
 app.listen(port, ()=> {
     console.log(`Server is running in PORT ${port}!`)
