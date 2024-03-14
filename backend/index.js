@@ -8,6 +8,11 @@ const app = express();
 
 const authRoute = require("./routes/auth");
 const userRoute = require("./routes/user");
+const postRoute = require("./routes/post");
+const newsRoute = require("./routes/news");
+const conversationRoute = require("./routes/conversation");
+const messageRoute = require("./routes/message");
+
 const bodyParser = require("body-parser");
 const mongoose = require("mongoose");
 const port  = process.env.PORT || 8000;
@@ -36,6 +41,10 @@ app.get("/v1/", (req, res) => {
 });
 app.use("/v1/auth", authRoute);
 app.use("/v1/user", userRoute);
+app.use("/v1/post", postRoute);
+app.use("/v1/news", newsRoute);
+app.use("/v1/conversation", conversationRoute);
+app.use("/v1/message", messageRoute);
 
 app.listen(port, ()=> {
     console.log(`Server is running in PORT ${port}!`)

@@ -1,4 +1,6 @@
 const User = require("../models/User");
+const Comment = require("../models/Comment");
+const Post = require("../models/Post");
 const bcrypt = require("bcrypt");
 const authController = require("./authController");
 

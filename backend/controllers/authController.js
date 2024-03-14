@@ -59,7 +59,6 @@ const authController = {
             if(err) {
                 console.log(err);
             }
-            // console.log("check user", user)
             const  newAccessToken = authController.generateAccessToken(user);
             const  newRefreshToken = authController.generateRefreshToken(user);
             res.cookie("refreshToken", refreshToken, {
