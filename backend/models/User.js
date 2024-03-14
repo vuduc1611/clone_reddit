@@ -1,6 +1,6 @@
-const mongoose = require("mongoose")
-const { isEmail } = require("validator")
-var uniqueValidator = require("mongoose-unique-validator")
+const mongoose = require("mongoose");
+const { isEmail } = require("validator");
+var uniqueValidator = require("mongoose-unique-validator");
 
 const userSchema = new mongoose.Schema(
     {
@@ -70,9 +70,9 @@ const userSchema = new mongoose.Schema(
     { 
         timestamps: true 
     }
-)
+);
 
 userSchema.plugin(uniqueValidator, {
     message: "Error, expected {PATH} to be unique",
-})
+});
 module.exports = mongoose.model("User", userSchema);
