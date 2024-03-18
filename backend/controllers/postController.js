@@ -4,39 +4,73 @@ const {cloudinary} = require("../utils/cloudinary")
 
 const postController = {
     // CREATE A POST
-    createPost: async (req, res) => {
-        try {
-            const user = await User.findById(req.body.userId);
-            if(req.body.imageurl) {
-                const result = await cloudinary.uploader.upload(req.body.imageUrl, {
-                    upload_preset: "post_image",
-                });
-                const makePost = {
-                    ...req.body,
-                    imageUrl: result.secure_url,
-                    cloudinaryId: result.public_id,
-                    username: user.username,
-                    avaUrl: user.profilePicture,
-                    theme: user.theme,
-                };
-                const newPost = new Post(makePost);
-                const savedPost = await newPost.save();
-                return res.status(200).json(savedPost);
-            } else {
-                const makePost = {
-                    ...req.body,
-                    username: user.username,
-                    avaUrl: user.profilePicture,
-                    theme: user.theme,
-                };
-                const newPost = new Post(makePost);
-                const savedPost = await newPost.save();
-                return res.status(200).json(savedPost);
-            }
-        } catch (error) {
-            res.status(500).json(error);
-        }
-    },
+    // createPost: async (req, res) => {
+    //     try {
+    //         const user = await User.findById(req.body.userId);
+    //         if(req.body.imageUrl) {
+    //             const result = await cloudinary.uploader.upload(req.body.imageUrl, {
+    //                 upload_preset: "post_image",
+    //             });
+    //             const makePost = {
+    //                 ...req.body,
+    //                 imageUrl: result.secure_url,
+    //                 cloudinaryId: result.public_id,
+    //                 username: user.username,
+    //                 avaUrl: user.profilePicture,
+    //                 theme: user.theme,
+    //             };
+    //             const newPost = new Post(makePost);
+    //             const savedPost = await newPost.save();
+    //             return res.status(200).json(savedPost);
+    //         } else {
+    //             const makePost = {
+    //                 ...req.body,
+    //                 username: user.username,
+    //                 avaUrl: user.profilePicture,
+    //                 theme: user.theme,
+    //             };
+    //             const newPost = new Post(makePost);
+    //             const savedPost = await newPost.save();
+    //             return res.status(200).json(savedPost);
+    //         }
+    //     } catch (error) {
+    //         res.status(500).json(error);
+    //     }
+    // },
+     //CREATE A POST
+  createPost: async (req, res) => {
+    try {
+      const users = await User.findById(req.body.userId);
+      if (req.body.imageUrl) {
+        const result = await cloudinary.uploader.upload(req.body.imageUrl, {
+          upload_presets: "post_image",
+        });
+        const makePost = {
+          ...req.body,
+          imageUrl: result.secure_url,
+          cloudinaryId: result.public_id,
+          username: users.username,
+          avaUrl: users.profilePicture,
+          theme: users.theme,
+        };
+        const newPost = new Post(makePost);
+        const savedPost = await newPost.save();
+        return res.status(200).json(savedPost);
+      } else {
+        const makePost = {
+          ...req.body,
+          username: users.username,
+          avaUrl: users.profilePicture,
+          theme: users.theme,
+        };
+        const newPost = new Post(makePost);
+        const savedPost = await newPost.save();
+        return res.status(200).json(savedPost);
+      }
+    } catch (err) {
+      res.status(500).json(err);
+    }
+  },
     // UPDATE POST
     updatePost: async (req, res) => {
         try{

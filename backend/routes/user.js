@@ -12,31 +12,31 @@ router.get(
 router.get(
     "/:id",
     middlewareController.verifyToken,
-    userController.searchAllUser
+    userController.getUser
 );
 //UPDATE USER
 router.put(
     "/:id",
     middlewareController.verifyTokenAndUserAuthorization,
-    userController.searchAllUser
+    userController.updateUser
 );
 //DELETE USER
 router.delete(
     "/:id",
     middlewareController.verifyTokenAndUserAuthorization,
-    userController.searchAllUser
+    userController.deleteUser
 );
 //GET LEADER BOARD USERS
-router.put(
+router.get(
     "/:id/leaderboard",
     middlewareController.verifyToken,
-    userController.searchAllUser
+    userController.getLeaderboard
 );
 //FOLLOW A USER
 router.put(
     "/:id/follow",
     middlewareController.verifyToken,
-    userController.searchAllUser
+    userController.followUser
 );
 
 
