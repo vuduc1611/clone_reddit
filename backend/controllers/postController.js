@@ -3,40 +3,6 @@ const Post = require("../models/Post");
 const {cloudinary} = require("../utils/cloudinary")
 
 const postController = {
-    // CREATE A POST
-    // createPost: async (req, res) => {
-    //     try {
-    //         const user = await User.findById(req.body.userId);
-    //         if(req.body.imageUrl) {
-    //             const result = await cloudinary.uploader.upload(req.body.imageUrl, {
-    //                 upload_preset: "post_image",
-    //             });
-    //             const makePost = {
-    //                 ...req.body,
-    //                 imageUrl: result.secure_url,
-    //                 cloudinaryId: result.public_id,
-    //                 username: user.username,
-    //                 avaUrl: user.profilePicture,
-    //                 theme: user.theme,
-    //             };
-    //             const newPost = new Post(makePost);
-    //             const savedPost = await newPost.save();
-    //             return res.status(200).json(savedPost);
-    //         } else {
-    //             const makePost = {
-    //                 ...req.body,
-    //                 username: user.username,
-    //                 avaUrl: user.profilePicture,
-    //                 theme: user.theme,
-    //             };
-    //             const newPost = new Post(makePost);
-    //             const savedPost = await newPost.save();
-    //             return res.status(200).json(savedPost);
-    //         }
-    //     } catch (error) {
-    //         res.status(500).json(error);
-    //     }
-    // },
      //CREATE A POST
   createPost: async (req, res) => {
     try {
@@ -228,7 +194,7 @@ const postController = {
                 );
                 return res.status(200).json('added to favorites');
             } else {
-                await User.findByIdAndRemove(
+                await User.findByIdAndUpdate(
                     {_id: req.body.userId},
                     {
                         $pull: {favorites: req.params.id },
@@ -247,12 +213,12 @@ const postController = {
             const currentUser = await User.findById(req.body.userId);
             const favoritePost = await Promise.all(
                 currentUser.favorites.map((id) => {
-                    return Post.findByIdid;
+                    return Post.findById(id);
                 })
             )
             res.status(200).json(favoritePost);
         } catch (error) {
-            res.status(200).json(error);
+            res.status(500).json(error);
         }
     }
 

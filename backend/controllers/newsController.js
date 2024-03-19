@@ -1,5 +1,5 @@
 const axios = require("axios");
-const url = "https://newsapi.org/v2"
+const baseUrl = "https://newsapi.org/v2"
 const newController = {
     getHotNews: async (req,res) => {
         try{ 

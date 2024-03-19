@@ -67,7 +67,7 @@ const middlewareController = {
             const endIndex = page * limit;
 
             const results = {};
-            if( endIndex < (await model.countDocument().exec())) {
+            if( endIndex < (await model.countDocuments().exec())) {
                 results.next = {
                     page: page + 1,
                     limit: limit

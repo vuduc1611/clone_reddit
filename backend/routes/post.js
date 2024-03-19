@@ -20,7 +20,7 @@ router.put(
     postController.updatePost
 );
 // delete a post
-router.put(
+router.delete(
     "/:id",
     middlewareController.verifyTokenAndUserAuthorization,
     postController.deletePost

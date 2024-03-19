@@ -1,6 +1,6 @@
 const Post = require("../models/Post");
 const User = require("../models/User");
-const Commentt = require("../models/Comment");
+const Comment = require("../models/Comment");
 
 const commentController = {
     // add a comment
@@ -19,7 +19,7 @@ const commentController = {
                 theme: user.theme
             };
             const newComment = new Comment(makedComment);
-            const savedComment = newComment.save();
+            const savedComment = await newComment.save();
             res.status(200).json(savedComment);
         } catch (error) {
             res.status(500).json(error);

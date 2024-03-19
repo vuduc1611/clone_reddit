@@ -5,7 +5,7 @@ const messageController = {
     createMessage: async (req, res) => {
         const newMsg = new Message(req.body);
         try {
-            const savedMsg = newMsg.save();
+            const savedMsg = await newMsg.save();
             await Conversation.findOneAndUpdate(
                 {
                     _id: req.body.conversationId

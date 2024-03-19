@@ -9,7 +9,7 @@ const userController = {
         try{
             const username = req.query.username
             const users = await User.find({username: {$regex: username}})
-                .limit(2)
+                .limit(10)
                 .select("username profilePicture theme")
                 .exec();
             return res.status(200).json(users);
