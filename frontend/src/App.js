@@ -1,11 +1,10 @@
 import { BrowserRouter as Router, Route, Routes } from "react-router-dom";
 import { Header } from "../src/Components/Header/Header";
 import { useEffect, useState } from "react";
-import { DesktopLanding } from "./Components/DesktopLanding/DesktopLanding";
-import { MobileLanding } from "./Components/MobileLanding/MobileLanding";
 import { LandingPage } from "./Components/LandingPage/LandingPage";
 import { Login } from "./Components/Auth/Login";
 import { Register } from "./Components/Auth/Register";
+import { HomePage } from "./Components/HomePage/HomePage";
 
 export default function App() {
   const [windowSize, setWindowSize] = useState({
@@ -42,10 +41,11 @@ export default function App() {
               <Route path="/landingpage" element={<LandingPage />} />
               <Route path="/login" element={<Login />} />
               <Route path="/register" element={<Register />} />
+              <Route path="/" element={<HomePage />} />
             </>
           ) : (
             <>
-              <Route path="/" element={<MobileLanding />} />
+              <Route path="/" element={<HomePage />} />
             </>
           )}
         </Routes>

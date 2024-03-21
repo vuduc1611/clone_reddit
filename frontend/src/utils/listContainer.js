@@ -1,10 +1,13 @@
+import home from "../assets/home.png";
+import news from "../assets/news.png";
+import friends from "../assets/friends.png";
 export const baseURL = "http://localhost:8000/v1";
 
 export const listContainer = {
   routes: [
-    { name: "Home", path: "/" },
-    { name: "News", path: "/news" },
-    { name: "Friends", path: "/friends" },
+    { name: "Home", path: "/", icon: home },
+    { name: "News", path: "/news", icon: news },
+    { name: "Friends", path: "/friends", icon: friends },
   ],
   tags: ["None", "NSFW", "Mood", "Meme", "Shitpost"],
   avaUrl: [

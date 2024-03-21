@@ -14,7 +14,7 @@ export const InputFields = (props) => {
   } = props;
   return (
     <>
-      <label> {label} </label>
+      {label && <label> {label} </label>}
       {inputType === "textarea" ? (
         <textarea
           type="text"
